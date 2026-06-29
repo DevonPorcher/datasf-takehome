@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: stg_datasf__compensation
+    description: "Staging employee compensation from datasf"
+    config:
+      materialized: incremental
+      unique_key: ['employee_name', 'job', 'reporting_year', 'year_type']
+      incremental_strategy: merge

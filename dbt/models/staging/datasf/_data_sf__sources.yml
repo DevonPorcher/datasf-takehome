@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: raw
+    database: datasf_takehome
+    schema: raw
+    tables:
+      - name: raw_datasf__compensation
+        description: "Raw employee compensation from datasf"
+        columns:
+          - name: "Employee Name"
+            tests:
+              - not_null
+          - name: "Job"
+            tests:
+              - not_null
+          - name: "Year"
+            tests:
+              - not_null
+          - name: "Year Type"
+            tests:
+              - not_null
