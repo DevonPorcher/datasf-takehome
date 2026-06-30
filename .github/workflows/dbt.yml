@@ -1,0 +1,41 @@
+name: dbt
+
+on:
+  pull_request:
+    paths:
+      - "dbt/**"
+  push:
+    branches: [main]
+    paths:
+      - "dbt/**"
+
+env:
+  DBT_PROFILES_DIR: ${{ github.workspace }}/dbt
+  SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+  SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+  SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+  SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+  SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+  SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+  SNOWFLAKE_SCHEMA: CI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dbt
+        run: pip install dbt-core==1.8.* dbt-snowflake==1.8.*
+
+      - name: dbt debug
+        working-directory: dbt
+        run: dbt debug
+
+      - name: dbt build
+        working-directory: dbt
+        run: dbt build
