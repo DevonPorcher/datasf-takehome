@@ -1,14 +1,16 @@
 terraform {
   required_providers {
     snowflake = {
-      source = "snowflakedb/snowflake"
+      source  = "snowflakedb/snowflake"
+      version = "~> 2.17"
     }
   }
 }
 
+# Set department_codes from python script that queries snowflake
+# Will progrmatically drive role creation, instead of hard coded code list
+# Risk of issues if codes were to be changing while this was running
 locals {
-  private_key_path  = "~/.ssh/snowflake_tf_snow_key.p8"
-
   department_codes = jsondecode(
     data.external.python_department_codes.result["department_codes"]
   )
@@ -38,6 +40,11 @@ variable "employee_table_name" {
   type = string
 }
 
+variable "private_key_path" {
+  type    = string
+  default = "~/.ssh/snowflake_tf_snow_key.p8"
+}
+
 data "external" "python_department_codes" {
   program = ["python3", "${path.module}/get_department_codes.py"]
 }
@@ -51,19 +58,9 @@ provider "snowflake" {
   warehouse         = "COMPUTE_WH"
   alias             = "useradmin"
   authenticator     = "SNOWFLAKE_JWT"
-  private_key       = file(local.private_key_path)
+  private_key       = file(var.private_key_path)
 }
 
-provider "snowflake" {
-  organization_name = var.organization_name
-  account_name      = var.account_name
-  user              = "TERRAFORM_SVC"
-  role              = "SYSADMIN"
-  warehouse         = "COMPUTE_WH"
-  alias             = "sysadmin"
-  authenticator     = "SNOWFLAKE_JWT"
-  private_key       = file(local.private_key_path)
-}
 
 # Grant USAGE on the database to PUBLIC
 resource "snowflake_grant_privileges_to_account_role" "public_db_usage" {
@@ -86,7 +83,7 @@ resource "snowflake_grant_privileges_to_account_role" "public_schema_usage" {
   }
 }
 
-# Grant SELECT on the employee compensation table to the role
+# Grant SELECT on the department compensation table to the role
 resource "snowflake_grant_privileges_to_account_role" "public_table_select" {
   provider          = snowflake.useradmin
   privileges        = ["SELECT"]
@@ -100,9 +97,9 @@ resource "snowflake_grant_privileges_to_account_role" "public_table_select" {
 
 # create LEADERSHIP role
 resource "snowflake_account_role" "leadership_role" {
-  provider          = snowflake.useradmin
-  name              = "LEADERSHIP"
-  comment           = "Leadership for employee compensation"
+  provider = snowflake.useradmin
+  name     = "LEADERSHIP"
+  comment  = "Leadership for employee compensation"
 }
 
 resource "snowflake_grant_account_role" "grant_leadership_role_to_sysadmin" {

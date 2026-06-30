@@ -219,7 +219,6 @@ __marimo__/
 
 # Terraform working directory
 .terraform/
-.terraform.lock.*
 
 # Terraform local state
 *.tfstate
