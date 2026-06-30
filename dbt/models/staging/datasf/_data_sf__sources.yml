@@ -9,14 +9,18 @@ sources:
         description: "Raw employee compensation from datasf"
         columns:
           - name: "Employee Name"
+            quote: true
             tests:
               - not_null
           - name: "Job"
+            quote: true
             tests:
               - not_null
           - name: "Year"
+            quote: true
             tests:
               - not_null
           - name: "Year Type"
+            quote: true
             tests:
               - not_null
