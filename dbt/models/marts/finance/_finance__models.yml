@@ -4,7 +4,7 @@ models:
   - name: department_compensation
     description: "Department compensation"
     config:
-      unique_key: ['department', 'reporting_year']
+      unique_key: ['department_code', 'reporting_year']
   - name: employee_compensation
     description: "Employee compensation"
     config:

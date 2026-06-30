@@ -1,7 +1,7 @@
 WITH
 
 staging_compensation AS (
-   SELECT * FROM {{ ref('stg_datasf__compensation') }}
+    SELECT * FROM {{ ref('stg_datasf__compensation') }}
 ),
 
 employee_compensation AS (

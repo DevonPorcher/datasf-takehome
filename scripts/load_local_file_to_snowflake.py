@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from datetime import datetime
 from dotenv import load_dotenv
@@ -26,7 +28,7 @@ def ingest_local_file_to_snowflake(
         role=os.getenv('SNOWFLAKE_ROLE'),
         warehouse=os.getenv('SNOWFLAKE_WAREHOUSE'),
         database=os.getenv('SNOWFLAKE_DATABASE'),
-        schema=os.getenv('SNOWFLAKE_SCHEMA'),
+        schema=os.getenv('SNOWFLAKE_RAW_SCHEMA'),
     )
 
     _, _, nrows, raw_output = write_pandas(
