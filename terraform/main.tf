@@ -61,6 +61,16 @@ provider "snowflake" {
   private_key       = file(var.private_key_path)
 }
 
+provider "snowflake" {
+  organization_name = var.organization_name
+  account_name      = var.account_name
+  user              = "TERRAFORM_SVC"
+  role              = "SYSADMIN"
+  warehouse         = "COMPUTE_WH"
+  alias             = "sysadmin"
+  authenticator     = "SNOWFLAKE_JWT"
+  private_key       = file(var.private_key_path)
+}
 
 # Grant USAGE on the database to PUBLIC
 resource "snowflake_grant_privileges_to_account_role" "public_db_usage" {
@@ -85,7 +95,7 @@ resource "snowflake_grant_privileges_to_account_role" "public_schema_usage" {
 
 # Grant SELECT on the department compensation table to the role
 resource "snowflake_grant_privileges_to_account_role" "public_table_select" {
-  provider          = snowflake.useradmin
+  provider          = snowflake.sysadmin
   privileges        = ["SELECT"]
   account_role_name = "PUBLIC"
   on_schema_object {
@@ -110,7 +120,7 @@ resource "snowflake_grant_account_role" "grant_leadership_role_to_sysadmin" {
 
 # Grant SELECT on the employee compensation table to the role
 resource "snowflake_grant_privileges_to_account_role" "leadership_table_select" {
-  provider          = snowflake.useradmin
+  provider          = snowflake.sysadmin
   privileges        = ["SELECT"]
   account_role_name = snowflake_account_role.leadership_role.name
   on_schema_object {
@@ -136,8 +146,10 @@ resource "snowflake_grant_account_role" "grant_department_head_role_to_sysadmin"
 }
 
 # Grant SELECT on the employee compensation table to the roles
+# This grant exposes all rows for every department head role
+# Row isolation by department is done by the row access policy managed in dbt
 resource "snowflake_grant_privileges_to_account_role" "department_head_table_select" {
-  provider          = snowflake.useradmin
+  provider          = snowflake.sysadmin
   for_each          = toset(local.department_codes)
   privileges        = ["SELECT"]
   account_role_name = snowflake_account_role.department_head_role[each.key].name
