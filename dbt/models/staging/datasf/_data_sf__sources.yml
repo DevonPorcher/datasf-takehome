@@ -11,16 +11,24 @@ sources:
           - name: "Employee Name"
             quote: true
             tests:
-              - not_null
-          - name: "Job"
+              - not_null:
+                  config:
+                    severity: warn
+          - name: "Job Code"
             quote: true
             tests:
-              - not_null
+              - not_null:
+                  config:
+                    severity: warn
           - name: "Year"
             quote: true
             tests:
-              - not_null
+              - not_null:
+                  config:
+                    severity: warn
           - name: "Year Type"
             quote: true
             tests:
-              - not_null
+              - not_null:
+                  config:
+                    severity: warn

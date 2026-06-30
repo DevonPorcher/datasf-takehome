@@ -5,5 +5,5 @@ models:
     description: "Staging employee compensation from datasf"
     config:
       materialized: incremental
-      unique_key: ['employee_name', 'job', 'reporting_year', 'year_type']
+      unique_key: ['employee_name', 'job_code', 'reporting_year', 'year_type']
       incremental_strategy: merge
