@@ -32,3 +32,9 @@ sources:
               - not_null:
                   config:
                     severity: warn
+          - name: "Department Code"
+            quote: true
+            tests:
+              - not_null:
+                  config:
+                    severity: warn

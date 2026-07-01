@@ -5,7 +5,40 @@ models:
     description: "Department compensation"
     config:
       unique_key: ['department_code', 'year_type', 'reporting_year']
+    columns:
+      - name: department_code
+        tests:
+        tests:
+          - not_null
+      - name: year_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Calendar', 'Fiscal']
+      - name: reporting_year
+        tests:
+        tests:
+          - not_null
+
   - name: employee_compensation
     description: "Employee compensation"
     config:
-      unique_key: ['employee_name', 'job', 'reporting_year', 'year_type']
+      unique_key: ['employee_name', 'job_code', 'reporting_year', 'year_type']
+    columns:
+      - name: employee_name
+        tests:
+          - not_null
+      - name: department_code
+        tests:
+          - not_null
+          - relationships:
+              to: ref('department_compensation')
+              field: department_code
+      - name: year_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Calendar', 'Fiscal']
+      - name: reporting_year
+        tests:
+          - not_null
