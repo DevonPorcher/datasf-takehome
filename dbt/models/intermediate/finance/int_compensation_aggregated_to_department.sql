@@ -19,6 +19,7 @@ compensation_aggregated_to_department AS (
     SELECT
         department_code,
         department_agg AS department,
+        year_type,
         reporting_year,
         COUNT(*) AS employee_count,
         SUM(base_salary) AS total_base_salary,
@@ -30,9 +31,8 @@ compensation_aggregated_to_department AS (
         AVG(other_salary) AS average_other_salary,
         AVG(total_salary) AS average_overall_salary
     FROM department_name_agg
-    WHERE year_type='Fiscal'
-    AND department_code IS NOT NULL
-    GROUP BY department_code, department_agg, reporting_year
+    WHERE department_code IS NOT NULL
+    GROUP BY department_code, department_agg, year_type, reporting_year
 )
 
 SELECT * FROM compensation_aggregated_to_department

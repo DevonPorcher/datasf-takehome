@@ -8,6 +8,7 @@ department_compensation AS (
     SELECT
         department_code,
         department,
+        year_type,
         reporting_year,
         total_base_salary,
         total_overtime,
