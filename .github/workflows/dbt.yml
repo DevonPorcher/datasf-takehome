@@ -2,12 +2,11 @@ name: dbt
 
 on:
   pull_request:
-    paths:
-      - "dbt/**"
   push:
     branches: [main]
     paths:
       - "dbt/**"
+  workflow_dispatch:
 
 env:
   DBT_PROFILES_DIR: ${{ github.workspace }}/dbt
