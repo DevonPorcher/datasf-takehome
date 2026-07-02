@@ -8,7 +8,6 @@ models:
     columns:
       - name: department_code
         tests:
-        tests:
           - not_null
       - name: year_type
         tests:
@@ -17,8 +16,19 @@ models:
               values: ['Calendar', 'Fiscal']
       - name: reporting_year
         tests:
+          - not_null
+
+  - name: department_head_role_mapping
+    description: "Mapping of department codes to their Snowflake department head role names"
+    columns:
+      - name: role_name
         tests:
           - not_null
+          - unique
+      - name: department_code
+        tests:
+          - not_null
+          - unique
 
   - name: employee_compensation
     description: "Employee compensation"
