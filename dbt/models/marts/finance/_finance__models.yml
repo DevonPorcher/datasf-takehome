@@ -13,7 +13,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['Calendar', 'Fiscal']
+              arguments:
+                values: ['Calendar', 'Fiscal']
       - name: reporting_year
         tests:
           - not_null
@@ -42,13 +43,15 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('department_compensation')
-              field: department_code
+              arguments:
+                to: ref('department_compensation')
+                field: department_code
       - name: year_type
         tests:
           - not_null
           - accepted_values:
-              values: ['Calendar', 'Fiscal']
+              arguments:
+                values: ['Calendar', 'Fiscal']
       - name: reporting_year
         tests:
           - not_null

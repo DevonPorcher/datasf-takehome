@@ -33,7 +33,8 @@ sources:
                   config:
                     severity: warn
               - accepted_values:
-                  values: ['Calendar', 'Fiscal']
+                  arguments:
+                    values: ['Calendar', 'Fiscal']
                   config:
                     severity: warn
           - name: "Department Code"
