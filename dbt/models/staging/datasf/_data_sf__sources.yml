@@ -32,6 +32,10 @@ sources:
               - not_null:
                   config:
                     severity: warn
+              - accepted_values:
+                  values: ['Calendar', 'Fiscal']
+                  config:
+                    severity: warn
           - name: "Department Code"
             quote: true
             tests:
