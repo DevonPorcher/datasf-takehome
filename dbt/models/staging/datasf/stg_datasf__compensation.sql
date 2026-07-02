@@ -48,6 +48,7 @@ WHERE employee_name IS NOT NULL
     AND job_code IS NOT NULL
     AND reporting_year IS NOT NULL
     AND year_type IS NOT NULL
+    AND department_code IS NOT NULL
 
 {% if is_incremental() %}
     -- Select only rows created or updated after the last recorded update

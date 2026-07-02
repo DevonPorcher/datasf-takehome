@@ -4,4 +4,4 @@ models:
   - name: int_compensation_aggregated_to_department
     description: "Intermediate employee compensation aggregated to department"
     config:
-      unique_key: ['department', 'reporting_year']
+      unique_key: ['department_code', 'year_type', 'reporting_year']
