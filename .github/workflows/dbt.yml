@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dbt Cloud CLI
         run: |
-          curl -fsSL https://cloud.getdbt.com/downloads/cliV2/latest/linux-amd64/dbt.tar.gz | tar -xz
+          curl -fsSL https://github.com/dbt-labs/dbt-cli/releases/download/v0.40.18/dbt_0.40.18_linux_amd64.tar.gz | tar -xz
           sudo mv dbt /usr/local/bin/dbt
 
       - name: dbt debug
