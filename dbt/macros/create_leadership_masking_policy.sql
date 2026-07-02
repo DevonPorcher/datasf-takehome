@@ -3,20 +3,16 @@
     {% set table_name = ref('employee_compensation') %}
 
     {% if execute %}
-        {% set check_sql %}
-            SELECT COUNT(*) AS cnt
-            FROM {{ target.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES
-            WHERE REF_ENTITY_NAME = '{{ table_name.identifier }}'
-            AND REF_COLUMN_NAME = '{{ column_name }}'
-            AND POLICY_KIND = 'MASKING_POLICY'
-        {% endset %}
-        {% set results = run_query(check_sql) %}
-        {% if results.rows[0][0] > 0 %}
-            {% set drop_sql %}
+        {% set drop_sql %}
+            EXECUTE IMMEDIATE $$
+            BEGIN
                 ALTER TABLE {{ table_name }} MODIFY COLUMN {{ column_name }} UNSET MASKING POLICY;
-            {% endset %}
-            {% do run_query(drop_sql) %}
-        {% endif %}
+            EXCEPTION WHEN OTHER THEN
+                NULL;
+            END;
+            $$;
+        {% endset %}
+        {% do run_query(drop_sql) %}
     {% endif %}
 
     {% set create_sql %}
