@@ -8,7 +8,6 @@ Raw employee compensation data is loaded into Snowflake via a Python script, the
 
 ```
 CSV → Raw → Staging → Intermediate → Marts
-                  (managed by dbt)
 ```
 
 The pipeline is designed to run daily, triggered by a cron job or Airflow DAG.
@@ -41,7 +40,7 @@ Access is governed by Snowflake RBAC with three consumer tiers:
 - A row access policy restricts department head roles to rows matching their department code.
 - A masking policy masks `employee_name` for the LEADERSHIP role.
 
-Policies are reapplied on every dbt run because `CREATE OR REPLACE TABLE` drops attached policies. Terraform handles role structure; dbt handles data-level enforcement.
+Policies are reapplied on every dbt run because `CREATE OR REPLACE TABLE` drops attached policies. Terraform handles role structure. dbt handles data-level enforcement.
 
 ## CI/CD
 
