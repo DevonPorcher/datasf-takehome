@@ -25,12 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dbt
-        run: pip install dbt-core==1.8.* dbt-snowflake==1.8.*
+      - name: Install dbt Cloud CLI
+        run: pip install dbt-cloud-cli
 
       - name: dbt debug
         working-directory: dbt
