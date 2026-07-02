@@ -2,8 +2,6 @@ name: dbt
 
 on:
   pull_request:
-    paths:
-      - "dbt/**"
   push:
     branches: [main]
     paths:
