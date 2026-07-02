@@ -5,7 +5,7 @@ department_compensation AS (
 ),
 
 department_role_mapping AS (
-    SELECT
+    SELECT DISTINCT
         CONCAT(department_code, '_DEPARTMENT_HEAD') AS role_name,
         department_code
     FROM department_compensation

@@ -2,10 +2,18 @@
     {% set policy_name = target.database ~ '.' ~ generate_schema_name('analytics_finance', none) ~ '.leadership_masking_policy' %}
     {% set table_name = ref('employee_compensation') %}
 
-    {% set drop_sql %}
-        ALTER TABLE {{ table_name }} MODIFY COLUMN {{ column_name }} UNSET MASKING POLICY;
-    {% endset %}
-    {% do run_query(drop_sql) %}
+    {% if execute %}
+        {% set drop_sql %}
+            EXECUTE IMMEDIATE $$
+            BEGIN
+                ALTER TABLE {{ table_name }} MODIFY COLUMN {{ column_name }} UNSET MASKING POLICY;
+            EXCEPTION WHEN OTHER THEN
+                NULL;
+            END;
+            $$;
+        {% endset %}
+        {% do run_query(drop_sql) %}
+    {% endif %}
 
     {% set create_sql %}
         CREATE OR REPLACE MASKING POLICY {{ policy_name }}
